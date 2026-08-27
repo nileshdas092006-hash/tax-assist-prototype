@@ -1,0 +1,13 @@
+{
+  "notice_id": "DIN-2026-889102X",
+  "issue_date": "2026-08-10",
+  "section": "139(9) Defective Return",
+  "pan_display": "[PAN Redacted]",
+  "defect_code": "Error Code 14 - Gross Total Income Nil vs TDS Claimed",
+  "official_legal_text": "In the return of income filed, the Gross Total Income has been shown as Nil or less than the basic exemption limit, whereas credit for Tax Deducted at Source (TDS) has been claimed under Schedule TDS 1/2. As per Section 139(9), this constitutes an invalid return unless corrected via revised computation under Schedule Part B-TTI.",
+  "deadline_days_left": 11,
+  "guided_questions": [
+    { "id": "q1", "question": "Did you earn interest income from Fixed Deposits (FD) or Savings Accounts this year?", "type": "boolean" },
+    { "id": "q2", "question": "What was the approximate total interest earned from bank deposits?", "type": "currency", "placeholder": "e.g., ₹45,000" }
+  ]
+}
