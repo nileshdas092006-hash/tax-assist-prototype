@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-export default function DeductionsScreen({ payload, setPayload, onNext, onBack }) {
+export default function DeductionsScreen({ setPayload, onNext, onBack }) {
   const [deductions, setDeductions] = useState({
     section80C: { has: null, amount: '' },
     section80D: { has: null, amount: '' },
@@ -114,6 +114,8 @@ export default function DeductionsScreen({ payload, setPayload, onNext, onBack }
               <input
                 type="text"
                 inputMode="decimal"
+                autoComplete="off"
+                aria-label={`${q.text} — amount in rupees`}
                 placeholder="0.00"
                 value={state.amount}
                 onChange={(e) => handleAmountChange(q.id, e.target.value)}

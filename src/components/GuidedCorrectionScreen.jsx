@@ -7,17 +7,30 @@ const GuidedCorrectionScreen = ({ onNext, onBack, answers, setAnswers, aiAnalysi
   // Resolve questions: prefer AI-generated, fall back to mock data
   const questions = aiAnalysis?.guided_questions ?? mockData.guided_questions ?? [];
 
+  const formatINR = (n) =>
+    new Intl.NumberFormat('en-IN', {
+      style: 'currency',
+      currency: 'INR',
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 2,
+    }).format(n);
+
   const validateAmount = (value) => {
-    if (!value || String(value).trim() === '') {
+    if (value === undefined || value === null || String(value).trim() === '') {
       return { isValid: false, errorMessage: "Please enter a valid amount." };
     }
-    // Strip ₹ and commas, but preserve the decimal point
-    const stripped = String(value).replace(/[₹,]/g, '').trim();
-    if (isNaN(stripped) || stripped === '') {
+    // Strip ₹, commas and spaces, but preserve the sign and decimal point so we
+    // can give a specific message for each kind of invalid input.
+    const stripped = String(value).replace(/[₹,\s]/g, '');
+    if (stripped.startsWith('-')) {
+      return { isValid: false, errorMessage: "Amount cannot be negative." };
+    }
+    if (/[eE]/.test(stripped)) {
+      return { isValid: false, errorMessage: "Enter the full amount without scientific notation." };
+    }
+    if (!/^\d+(\.\d+)?$/.test(stripped)) {
       return { isValid: false, errorMessage: "Please enter numbers only." };
     }
-
-    // Ensure up to 2 decimal places max
     if (!/^\d+(\.\d{1,2})?$/.test(stripped)) {
       return { isValid: false, errorMessage: "Amount can only have up to 2 decimal places." };
     }
@@ -154,8 +167,12 @@ const GuidedCorrectionScreen = ({ onNext, onBack, answers, setAnswers, aiAnalysi
                     {(q.type === 'currency' || q.type === 'numeric') && (
                       <div className="relative">
                         <span className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-500 font-bold">₹</span>
-                        <input 
-                          type="text" 
+                        <input
+                          type="text"
+                          inputMode="decimal"
+                          autoComplete="off"
+                          aria-label={q.question}
+                          aria-invalid={validationError ? 'true' : 'false'}
                           placeholder={q.placeholder || 'Enter amount'}
                           value={answers[q.id] || ''}
                           onChange={(e) => handleAnswerChange(q.id, e.target.value)}
@@ -197,8 +214,9 @@ const GuidedCorrectionScreen = ({ onNext, onBack, answers, setAnswers, aiAnalysi
                 {(() => {
                   if (!isQ1True || !isAmountValid) return '₹0';
                   const nq = questions.find(q => q.type === 'currency' || q.type === 'numeric');
-                  const val = nq ? answers[nq.id] : null;
-                  return val ? `₹${String(val).replace(/[^0-9.]/g, '')}` : '₹0';
+                  const raw = nq ? answers[nq.id] : null;
+                  const num = parseFloat(String(raw ?? '').replace(/[^0-9.]/g, ''));
+                  return Number.isFinite(num) && num > 0 ? formatINR(num) : '₹0';
                 })()}
               </span>
             </div>

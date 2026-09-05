@@ -125,8 +125,13 @@ const SubmitConfirmationScreen = ({ flowType = 'correction', formType = 'ITR-1',
                   Fill Demo OTP
                 </button>
               </div>
-              <input 
-                type="text" 
+              <input
+                type="text"
+                inputMode="numeric"
+                pattern="[0-9]*"
+                autoComplete="one-time-code"
+                aria-label="Aadhaar OTP or EVC"
+                aria-invalid={otp.length > 0 && otp.length < 4 ? 'true' : 'false'}
                 maxLength="6"
                 placeholder="• • • • • •"
                 value={otp}

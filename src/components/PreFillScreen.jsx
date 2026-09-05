@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import mockAIS from '../data/mockAIS.json';
 
-export default function PreFillScreen({ payload, setPayload, onNext, onBack }) {
+export default function PreFillScreen({ setPayload, onNext, onBack }) {
   // Initialize local state with mock AIS data so users can edit it
   const [incomeData, setIncomeData] = useState({
     gross_salary: mockAIS.gross_salary.amount,
@@ -71,6 +71,8 @@ export default function PreFillScreen({ payload, setPayload, onNext, onBack }) {
               <input
                 type="text"
                 inputMode="numeric"
+                autoComplete="off"
+                aria-label={`${title} amount in rupees`}
                 value={value}
                 onChange={(e) => handleInputChange(key, e.target.value)}
                 className="w-full border-b-2 border-blue-500 focus:outline-none focus:border-blue-600 pb-1"

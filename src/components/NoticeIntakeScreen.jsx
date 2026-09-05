@@ -23,7 +23,7 @@ const NoticeIntakeScreen = ({ onNext, aiAnalysis, setAiAnalysis }) => {
         } else {
           setApiError('The AI translation returned an empty response. Please try again.');
         }
-      } catch (err) {
+      } catch {
         if (!cancelled) {
           setApiError('Failed to connect to the AI service. Please check your connection.');
         }

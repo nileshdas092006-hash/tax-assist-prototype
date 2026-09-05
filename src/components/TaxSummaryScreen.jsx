@@ -64,7 +64,7 @@ export default function TaxSummaryScreen({ payload, setPayload, onPayment, onVer
         const explanation = `You earned a gross income of ${formatCurrency(computation.gross)} and claimed ${formatCurrency(computation.totalDeductions)} in deductions. This brings your net taxable income down to ${formatCurrency(computation.net)}.\n\nYour total calculated tax is ${formatCurrency(computation.tax)}, but since ₹${formatCurrency(computation.tds).replace('₹', '')} was already deducted in TDS, your final ${type} **${formattedDue}**.`;
         
         setAiExplanation(explanation);
-      } catch (err) {
+      } catch {
         setAiExplanation("We computed your tax but couldn't generate the AI explanation at this time.");
       } finally {
         setLoading(false);
