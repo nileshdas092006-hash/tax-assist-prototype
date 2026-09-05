@@ -4,8 +4,18 @@ import GuidedCorrectionScreen from './components/GuidedCorrectionScreen'
 import SubmitConfirmationScreen from './components/SubmitConfirmationScreen'
 import DashboardScreen from './components/DashboardScreen'
 import AIIntakeScreen from './components/AIIntakeScreen'
+import PreFillScreen from './components/PreFillScreen'
+import DeductionsScreen from './components/DeductionsScreen'
+import TaxSummaryScreen from './components/TaxSummaryScreen'
+import PaymentScreen from './components/PaymentScreen'
 
 const SESSION_KEY = 'tax-assist:flow'
+
+// Every step the router below renders a real screen for. Anything else — stale
+// sessionStorage written by an older build, or a half-built flow — must fall back
+// to the Dashboard rather than render a blank page (the failure class that took
+// the site down once already).
+const KNOWN_STEPS = [0, 1, 2, 3, 10, 11, 12, 13, 14, 15]
 
 // Read the persisted flow state from sessionStorage. Returns null when nothing
 // is stored or storage is unavailable (private mode, storage disabled, quota).
@@ -24,7 +34,7 @@ function App() {
   // Hydrate the whole flow from sessionStorage once, on first render.
   const [restored] = useState(readSession)
 
-  const initialStep = restored?.step !== undefined ? restored.step : 0
+  const initialStep = KNOWN_STEPS.includes(restored?.step) ? restored.step : 0
 
   const [step, setStep] = useState(initialStep)
   const [correctionAnswers, setCorrectionAnswers] = useState(
@@ -68,11 +78,16 @@ function App() {
     const handlePopState = (event) => {
       const target =
         event.state && typeof event.state.step === 'number' ? event.state.step : 0
-      setStep(target)
+      setStep(KNOWN_STEPS.includes(target) ? target : 0)
     }
     window.addEventListener('popstate', handlePopState)
     return () => window.removeEventListener('popstate', handlePopState)
   }, [])
+
+  // Final guard against a blank page: every path that sets `step` is already
+  // filtered against KNOWN_STEPS (hydration, popstate, goToStep), so this only
+  // ever matters if something regresses — an unknown step renders the Dashboard.
+  const activeStep = KNOWN_STEPS.includes(step) ? step : 0
 
   // Advance a step and push a matching history entry so Back can undo it.
   const goToStep = useCallback((next) => {
@@ -94,20 +109,61 @@ function App() {
 
   return (
     <div>
-      {step === 0 && (
+      {activeStep === 0 && (
         <DashboardScreen
           onSelectDefectiveReturn={() => goToStep(1)}
           onSelectFreshFiling={() => goToStep(10)}
         />
       )}
-      {step === 1 && <NoticeIntakeScreen onNext={() => goToStep(2)} aiAnalysis={aiAnalysis} setAiAnalysis={setAiAnalysis} />}
-      {step === 2 && <GuidedCorrectionScreen answers={correctionAnswers} setAnswers={setCorrectionAnswers} onNext={() => goToStep(3)} onBack={goBack} aiAnalysis={aiAnalysis} />}
-      {step === 3 && <SubmitConfirmationScreen handleReturnToDashboard={handleReturnToDashboard} onBack={goBack} />}
-      {step === 10 && (
+      {activeStep === 1 && <NoticeIntakeScreen onNext={() => goToStep(2)} aiAnalysis={aiAnalysis} setAiAnalysis={setAiAnalysis} />}
+      {activeStep === 2 && <GuidedCorrectionScreen answers={correctionAnswers} setAnswers={setCorrectionAnswers} onNext={() => goToStep(3)} onBack={goBack} aiAnalysis={aiAnalysis} />}
+      {activeStep === 3 && <SubmitConfirmationScreen handleReturnToDashboard={handleReturnToDashboard} onBack={goBack} />}
+      {activeStep === 10 && (
         <AIIntakeScreen
           payload={backgroundITRPayload}
           setPayload={setBackgroundITRPayload}
+          onNext={() => goToStep(11)}
           onBack={() => goToStep(0)}
+        />
+      )}
+      {activeStep === 11 && (
+        <PreFillScreen
+          payload={backgroundITRPayload}
+          setPayload={setBackgroundITRPayload}
+          onNext={() => goToStep(12)}
+          onBack={() => goToStep(10)}
+        />
+      )}
+      {activeStep === 12 && (
+        <DeductionsScreen
+          payload={backgroundITRPayload}
+          setPayload={setBackgroundITRPayload}
+          onNext={() => goToStep(13)}
+          onBack={() => goToStep(11)}
+        />
+      )}
+      {activeStep === 13 && (
+        <TaxSummaryScreen
+          payload={backgroundITRPayload}
+          setPayload={setBackgroundITRPayload}
+          onPayment={() => goToStep(14)}
+          onVerification={() => goToStep(15)}
+          onBack={() => goToStep(12)}
+        />
+      )}
+      {activeStep === 14 && (
+        <PaymentScreen
+          payload={backgroundITRPayload}
+          setPayload={setBackgroundITRPayload}
+          onNext={() => goToStep(15)}
+          onBack={() => goToStep(13)}
+        />
+      )}
+      {activeStep === 15 && (
+        <SubmitConfirmationScreen
+          flowType="filing"
+          handleReturnToDashboard={handleReturnToDashboard}
+          onBack={goBack}
         />
       )}
 
