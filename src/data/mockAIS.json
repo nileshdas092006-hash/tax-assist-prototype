@@ -1,0 +1,18 @@
+{
+  "gross_salary": {
+    "amount": 750000,
+    "source": "Form 16 / Employer"
+  },
+  "tds_deducted": {
+    "amount": 22500,
+    "source": "26AS"
+  },
+  "savings_and_fd_interest": {
+    "amount": 14200,
+    "source": "Bank Reporting"
+  },
+  "dividend_income": {
+    "amount": 1800,
+    "source": "CAMS / KFintech"
+  }
+}

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { fetchIntakeQuestions } from '../utils/fetchIntakeQuestions';
 
-export default function AIIntakeScreen({ payload, setPayload, onBack }) {
+export default function AIIntakeScreen({ payload, setPayload, onNext, onBack }) {
   const [questions, setQuestions] = useState([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [loading, setLoading] = useState(true);
@@ -40,6 +40,7 @@ export default function AIIntakeScreen({ payload, setPayload, onBack }) {
       // Finished all questions
       const form = determineITRForm(newPayload);
       setRecommendedForm(form);
+      setPayload({ ...newPayload, recommended_form: form });
       setIsComplete(true);
     }
   };
@@ -73,7 +74,7 @@ export default function AIIntakeScreen({ payload, setPayload, onBack }) {
             <pre>{JSON.stringify(payload, null, 2)}</pre>
           </div>
           <button
-            onClick={onBack}
+            onClick={onNext}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-xl shadow-md transition-all active:scale-95"
           >
             Continue

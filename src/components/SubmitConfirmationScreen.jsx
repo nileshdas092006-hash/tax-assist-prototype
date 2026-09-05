@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const SubmitConfirmationScreen = ({ onBack, handleReturnToDashboard }) => {
+const SubmitConfirmationScreen = ({ flowType = 'correction', formType = 'ITR-1', onBack, handleReturnToDashboard }) => {
   const [otp, setOtp] = useState('');
   const [isSubmitted, setIsSubmitted] = useState(false);
 
@@ -20,11 +20,22 @@ const SubmitConfirmationScreen = ({ onBack, handleReturnToDashboard }) => {
               <span className="text-4xl">✅</span>
             </div>
             <h1 className="text-[22px] font-black text-gray-900 text-center leading-tight">
-              Response Submitted Successfully
+              {flowType === 'filing' ? 'ITR Successfully Filed & Digitally Verified' : 'Response Submitted Successfully'}
             </h1>
             <p className="text-gray-500 text-[15px] mt-3 text-center font-medium">
-              Your tax return has been corrected and digitally signed.
+              {flowType === 'filing' 
+                ? 'Your return is now with the Centralized Processing Center (CPC). No physical paperwork required.' 
+                : 'Your tax return has been corrected and digitally signed.'}
             </p>
+            {flowType === 'filing' && (
+              <div className="mt-4 bg-gray-50 border border-gray-200 rounded-lg p-3 text-center w-full">
+                <p className="text-xs text-gray-500 uppercase font-semibold">Acknowledgement No.</p>
+                <p className="text-sm font-mono font-bold text-gray-800">ACK-2026-889104</p>
+                <p className="text-xs text-gray-500 mt-2 uppercase font-semibold">Form Type</p>
+                <p className="text-sm font-bold text-gray-800">{formType}</p>
+                <p className="text-[10px] text-gray-400 mt-2">{new Date().toLocaleString()}</p>
+              </div>
+            )}
           </div>
 
           <div className="px-5 w-full flex-grow min-h-0 overflow-y-auto">
@@ -67,7 +78,7 @@ const SubmitConfirmationScreen = ({ onBack, handleReturnToDashboard }) => {
               onClick={handleReturnToDashboard}
               className="w-full min-h-[56px] bg-[#113C7A] hover:bg-blue-800 active:bg-blue-900 text-white font-extrabold text-[17px] rounded-xl shadow-lg transition-transform active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-blue-300 flex justify-center items-center"
             >
-              Return to Dashboard
+              Return to Home
             </button>
           </div>
         </div>
@@ -80,8 +91,12 @@ const SubmitConfirmationScreen = ({ onBack, handleReturnToDashboard }) => {
       <div className="w-full max-w-[360px] bg-white shadow-xl h-dvh relative flex flex-col overflow-hidden">
 
         <header className="bg-[#113C7A] text-white p-5 rounded-b-2xl shadow-md z-10">
-          <h1 className="text-xl font-extrabold leading-tight">Verification</h1>
-          <p className="text-blue-200 text-xs mt-1">Digitally sign your correction</p>
+          <h1 className="text-xl font-extrabold leading-tight">
+            {flowType === 'filing' ? 'Verify with Aadhaar OTP' : 'Verification'}
+          </h1>
+          <p className="text-blue-200 text-xs mt-1">
+            {flowType === 'filing' ? 'Digitally sign your return' : 'Digitally sign your correction'}
+          </p>
         </header>
 
         <div className="p-5 flex-grow min-h-0 space-y-6 overflow-y-auto pb-4">
@@ -90,15 +105,26 @@ const SubmitConfirmationScreen = ({ onBack, handleReturnToDashboard }) => {
               <span className="mr-2">🔒</span> Secure Sign
             </h3>
             <p className="text-sm text-yellow-900 font-medium leading-relaxed">
-              To finalize your response, please enter the One-Time Password sent to your Aadhaar-linked mobile number.
+              {flowType === 'filing' 
+                ? 'To finalize your tax filing, please enter the One-Time Password sent to your Aadhaar-linked mobile number.'
+                : 'To finalize your response, please enter the One-Time Password sent to your Aadhaar-linked mobile number.'}
             </p>
           </div>
 
           <form onSubmit={handleSubmit} className="flex flex-col space-y-4">
             <div className="bg-gray-50 border border-gray-200 p-4 rounded-xl shadow-sm">
-              <label className="block text-sm font-bold text-gray-800 mb-3">
-                Aadhaar OTP / EVC <span className="text-gray-400 font-normal">(Simulated)</span>
-              </label>
+              <div className="flex justify-between items-end mb-3">
+                <label className="block text-sm font-bold text-gray-800">
+                  Aadhaar OTP / EVC
+                </label>
+                <button 
+                  type="button" 
+                  onClick={() => setOtp('123456')}
+                  className="text-xs text-blue-600 font-bold bg-blue-100 hover:bg-blue-200 px-2 py-1 rounded"
+                >
+                  Fill Demo OTP
+                </button>
+              </div>
               <input 
                 type="text" 
                 maxLength="6"

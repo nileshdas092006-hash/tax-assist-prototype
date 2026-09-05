@@ -162,6 +162,7 @@ function App() {
       {activeStep === 15 && (
         <SubmitConfirmationScreen
           flowType="filing"
+          formType={backgroundITRPayload.recommended_form || 'ITR-1'}
           handleReturnToDashboard={handleReturnToDashboard}
           onBack={goBack}
         />
