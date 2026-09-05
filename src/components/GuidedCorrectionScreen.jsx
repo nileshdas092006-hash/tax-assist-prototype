@@ -101,9 +101,9 @@ const GuidedCorrectionScreen = ({ onNext, onBack, answers, setAnswers, aiAnalysi
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-start">
+    <div className="min-h-dvh bg-gray-100 flex flex-col items-center justify-start">
       {/* Mobile Constraint Wrapper */}
-      <div className="w-full max-w-[360px] bg-white shadow-xl min-h-screen relative flex flex-col overflow-hidden">
+      <div className="w-full max-w-[360px] bg-white shadow-xl h-dvh relative flex flex-col overflow-hidden">
         
         {/* Header */}
         <header className="bg-[#113C7A] text-white p-5 rounded-b-2xl shadow-md z-10">
@@ -112,7 +112,7 @@ const GuidedCorrectionScreen = ({ onNext, onBack, answers, setAnswers, aiAnalysi
         </header>
 
         {/* Scrollable Content */}
-        <div className="p-5 flex-grow flex flex-col space-y-6 overflow-y-auto pb-28">
+        <div className="p-5 flex-grow min-h-0 space-y-6 overflow-y-auto pb-4">
           
           {questions.length === 0 ? (
             <div className="bg-yellow-50 border border-yellow-200 rounded-xl p-5 text-center">
@@ -207,7 +207,7 @@ const GuidedCorrectionScreen = ({ onNext, onBack, answers, setAnswers, aiAnalysi
         </div>
 
         {/* Sticky Footer CTAs */}
-        <div className="p-4 bg-white border-t border-gray-100 absolute bottom-0 left-0 right-0 z-20 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.1)] flex space-x-3">
+        <div className="p-4 pb-12 bg-white border-t border-gray-100 shrink-0 z-10 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.1)] flex space-x-3">
           <button 
             onClick={onBack}
             className="w-1/3 min-h-[56px] bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 font-extrabold text-sm rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300"

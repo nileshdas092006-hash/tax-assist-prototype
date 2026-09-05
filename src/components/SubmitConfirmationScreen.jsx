@@ -13,9 +13,9 @@ const SubmitConfirmationScreen = ({ onBack, handleReturnToDashboard }) => {
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-start">
-        <div className="w-full max-w-[360px] bg-white shadow-xl min-h-screen relative flex flex-col overflow-hidden pb-6">
-          <div className="flex flex-col items-center mt-12 mb-8 px-6">
+      <div className="min-h-dvh bg-gray-100 flex flex-col items-center justify-start">
+        <div className="w-full max-w-[360px] bg-white shadow-xl h-dvh relative flex flex-col overflow-hidden">
+          <div className="flex flex-col items-center mt-12 mb-8 px-6 shrink-0">
             <div className="w-20 h-20 bg-green-100 rounded-full flex items-center justify-center mb-5 shadow-inner">
               <span className="text-4xl">✅</span>
             </div>
@@ -27,7 +27,7 @@ const SubmitConfirmationScreen = ({ onBack, handleReturnToDashboard }) => {
             </p>
           </div>
 
-          <div className="px-5 w-full flex-grow">
+          <div className="px-5 w-full flex-grow min-h-0 overflow-y-auto">
             <div className="bg-gray-50 rounded-2xl p-5 border border-gray-200 shadow-sm">
               <h3 className="text-xs font-black text-gray-700 uppercase tracking-widest mb-5">What happens next?</h3>
               
@@ -62,7 +62,7 @@ const SubmitConfirmationScreen = ({ onBack, handleReturnToDashboard }) => {
             </div>
           </div>
 
-          <div className="px-5 mt-8 w-full sticky bottom-6">
+          <div className="px-5 pt-4 pb-12 w-full shrink-0">
             <button 
               onClick={handleReturnToDashboard}
               className="w-full min-h-[56px] bg-[#113C7A] hover:bg-blue-800 active:bg-blue-900 text-white font-extrabold text-[17px] rounded-xl shadow-lg transition-transform active:scale-[0.98] focus:outline-none focus:ring-4 focus:ring-blue-300 flex justify-center items-center"
@@ -76,15 +76,15 @@ const SubmitConfirmationScreen = ({ onBack, handleReturnToDashboard }) => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-start">
-      <div className="w-full max-w-[360px] bg-white shadow-xl min-h-screen relative flex flex-col overflow-hidden">
-        
+    <div className="min-h-dvh bg-gray-100 flex flex-col items-center justify-start">
+      <div className="w-full max-w-[360px] bg-white shadow-xl h-dvh relative flex flex-col overflow-hidden">
+
         <header className="bg-[#113C7A] text-white p-5 rounded-b-2xl shadow-md z-10">
           <h1 className="text-xl font-extrabold leading-tight">Verification</h1>
           <p className="text-blue-200 text-xs mt-1">Digitally sign your correction</p>
         </header>
 
-        <div className="p-5 flex-grow flex flex-col space-y-6">
+        <div className="p-5 flex-grow min-h-0 space-y-6 overflow-y-auto pb-4">
           <div className="bg-yellow-50 border-l-4 border-yellow-500 p-4 rounded-r-xl shadow-sm">
             <h3 className="text-xs font-black text-yellow-800 uppercase tracking-widest mb-2 flex items-center">
               <span className="mr-2">🔒</span> Secure Sign
@@ -112,7 +112,7 @@ const SubmitConfirmationScreen = ({ onBack, handleReturnToDashboard }) => {
         </div>
 
         {/* Sticky Footer CTAs */}
-        <div className="p-4 bg-white border-t border-gray-100 absolute bottom-0 left-0 right-0 z-20 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.1)] flex space-x-3">
+        <div className="p-4 pb-12 bg-white border-t border-gray-100 shrink-0 z-10 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.1)] flex space-x-3">
           <button 
             onClick={onBack}
             className="w-1/3 min-h-[56px] bg-gray-100 hover:bg-gray-200 active:bg-gray-300 text-gray-700 font-extrabold text-sm rounded-xl transition-colors focus:outline-none focus:ring-2 focus:ring-gray-300"

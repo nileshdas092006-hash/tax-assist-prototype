@@ -1,38 +1,26 @@
-import OpenAI from 'openai';
-
-const openai = new OpenAI({
-  apiKey: import.meta.env.VITE_OPENAI_API_KEY,
-  dangerouslyAllowBrowser: true
-});
-
-const SYSTEM_PROMPT = `You are translating an Indian Income Tax defective-return notice for a non-expert citizen. Given the raw official notice text, output JSON with exactly three keys: 
-1) 'plain_summary': 2-3 sentences, 8th-grade reading level, absolutely no jargon. 
-2) 'what_they_need_to_do': A one-sentence action step. 
-3) 'guided_questions': An array of 1-3 simple questions (objects with 'id', 'question', 'type' representing boolean or numeric) that would resolve this specific defect.
-CRITICAL RULE: Never invent tax rules. If the raw defect text does not clearly imply a fix, say so in 'what_they_need_to_do' instead of guessing.`;
-
 /**
- * Calls the OpenAI Chat Completions API to translate raw legal notice text
- * into a structured, plain-language JSON object.
+ * Sends the raw legal notice text to the serverless translation endpoint
+ * (`/api/translate-notice`), which performs the OpenAI call server-side so the
+ * API key never reaches the browser.
  *
  * @param {string} rawLegalText - The raw official notice text from the IT department.
  * @returns {Promise<Object|null>} Parsed JSON with plain_summary, what_they_need_to_do,
- *   and guided_questions, or null on failure.
+ *   and guided_questions, or the hardcoded mock fallback on any failure.
  */
 export async function fetchNoticeTranslation(rawLegalText) {
   try {
-    const response = await openai.chat.completions.create({
-      model: 'gpt-4o-mini',
-      response_format: { type: 'json_object' },
-      messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
-        { role: 'user', content: rawLegalText },
-      ],
-      temperature: 0.3,
+    const response = await fetch('/api/translate-notice', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ rawLegalText }),
     });
 
-    const content = response.choices[0].message.content;
-    const parsed = JSON.parse(content);
+    if (!response.ok) {
+      // 429 (rate limit / no credits), 500 (misconfigured), 502 (upstream) etc.
+      throw new Error(`Translation endpoint responded with ${response.status}`);
+    }
+
+    const parsed = await response.json();
     return parsed;
   } catch (error) {
     console.warn("OpenAI API unavailable or rate-limited. Serving mock fallback payload for prototype demo:", error);

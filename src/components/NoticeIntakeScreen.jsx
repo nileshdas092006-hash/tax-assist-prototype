@@ -37,9 +37,9 @@ const NoticeIntakeScreen = ({ onNext, aiAnalysis, setAiAnalysis }) => {
   }, [aiAnalysis, setAiAnalysis]);
 
   return (
-    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-start">
+    <div className="min-h-dvh bg-gray-100 flex flex-col items-center justify-start">
       {/* Mobile Constraint Wrapper */}
-      <div className="w-full max-w-[360px] bg-white shadow-xl min-h-screen relative flex flex-col overflow-hidden">
+      <div className="w-full max-w-[360px] bg-white shadow-xl h-dvh relative flex flex-col overflow-hidden">
         
         {/* Header */}
         <header className="bg-[#113C7A] text-white p-5 rounded-b-2xl shadow-md z-10">
@@ -58,7 +58,7 @@ const NoticeIntakeScreen = ({ onNext, aiAnalysis, setAiAnalysis }) => {
         </header>
 
         {/* Scrollable Content */}
-        <div className="p-5 flex-grow flex flex-col space-y-6 overflow-y-auto pb-24">
+        <div className="p-5 flex-grow min-h-0 space-y-6 overflow-y-auto pb-4">
           
           <div>
             <h2 className="text-[22px] font-black text-gray-900 leading-tight">
@@ -141,7 +141,7 @@ const NoticeIntakeScreen = ({ onNext, aiAnalysis, setAiAnalysis }) => {
         </div>
 
         {/* Sticky Footer CTA */}
-        <div className="p-4 bg-white border-t border-gray-100 absolute bottom-0 left-0 right-0 z-20 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.1)]">
+        <div className="p-4 pb-12 bg-white border-t border-gray-100 shrink-0 z-10 shadow-[0_-10px_20px_-10px_rgba(0,0,0,0.1)]">
           <button 
             onClick={onNext}
             disabled={isLoading}
