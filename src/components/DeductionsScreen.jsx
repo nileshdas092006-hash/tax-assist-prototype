@@ -128,7 +128,8 @@ export default function DeductionsScreen({ payload, setPayload, onNext, onBack }
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 max-w-[360px] mx-auto relative overflow-hidden shadow-xl sm:border-x sm:border-gray-200">
+    <div className="min-h-dvh bg-gray-100 flex flex-col items-center justify-start">
+    <div className="w-full max-w-[360px] bg-gray-50 shadow-xl h-dvh relative flex flex-col overflow-hidden sm:border-x sm:border-gray-200">
       {/* Header */}
       <div className="bg-white px-4 py-4 shadow-sm z-10 flex items-center border-b border-gray-200 sticky top-0">
         <button onClick={onBack} className="text-gray-500 hover:text-gray-700 transition-colors p-1 -ml-1">
@@ -143,7 +144,7 @@ export default function DeductionsScreen({ payload, setPayload, onNext, onBack }
       </div>
 
       {/* Scrollable Content */}
-      <div className="flex-1 overflow-y-auto px-4 py-6 pb-40 space-y-6">
+      <div className="flex-1 min-h-0 overflow-y-auto px-4 py-6 pb-6 space-y-6">
         <style>{`
           .animate-fadeIn {
             animation: fadeIn 0.3s ease-out forwards;
@@ -157,13 +158,13 @@ export default function DeductionsScreen({ payload, setPayload, onNext, onBack }
         {questions.map((q, index) => renderQuestionCard(q, index))}
       </div>
 
-      {/* Fixed Bottom Action Row with Real-Time Total */}
-      <div className="absolute bottom-8 left-0 right-0 bg-white border-t border-gray-200 shadow-[0_-8px_15px_-3px_rgba(0,0,0,0.1)] z-20">
+      {/* Bottom Action Row with Real-Time Total */}
+      <div className="shrink-0 bg-white border-t border-gray-200 shadow-[0_-8px_15px_-3px_rgba(0,0,0,0.1)] z-20">
         <div className="bg-green-50 border-b border-green-100 px-5 py-3 flex justify-between items-center">
           <span className="text-green-800 text-xs font-semibold uppercase tracking-wider">Total Claimed</span>
           <span className="text-green-700 font-bold text-lg">{formatCurrency(totalDeductions)}</span>
         </div>
-        <div className="p-4 pb-6">
+        <div className="p-4 pb-12">
           <button
             onClick={handleConfirm}
             className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3.5 px-6 rounded-xl shadow-md transition-all active:scale-95 flex justify-center items-center gap-2"
@@ -173,6 +174,7 @@ export default function DeductionsScreen({ payload, setPayload, onNext, onBack }
           </button>
         </div>
       </div>
+    </div>
     </div>
   );
 }

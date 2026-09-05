@@ -47,19 +47,22 @@ export default function AIIntakeScreen({ payload, setPayload, onNext, onBack }) 
 
   if (loading) {
     return (
-      <div className="flex flex-col h-screen bg-gray-50 max-w-[360px] mx-auto relative overflow-hidden shadow-xl sm:border-x sm:border-gray-200">
-        <div className="flex-1 flex flex-col items-center justify-center p-6 space-y-4">
+      <div className="min-h-dvh bg-gray-100 flex flex-col items-center justify-start">
+      <div className="w-full max-w-[360px] bg-gray-50 shadow-xl h-dvh relative flex flex-col overflow-hidden sm:border-x sm:border-gray-200">
+        <div className="flex-1 min-h-0 flex flex-col items-center justify-center p-6 space-y-4">
           <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-600"></div>
           <p className="text-gray-500 animate-pulse text-sm">AI is building your profile...</p>
         </div>
+      </div>
       </div>
     );
   }
 
   if (isComplete) {
     return (
-      <div className="flex flex-col h-screen bg-gray-50 max-w-[360px] mx-auto relative overflow-hidden shadow-xl sm:border-x sm:border-gray-200">
-        <div className="flex flex-col items-center justify-center flex-1 p-6 text-center space-y-6">
+      <div className="min-h-dvh bg-gray-100 flex flex-col items-center justify-start">
+      <div className="w-full max-w-[360px] bg-gray-50 shadow-xl h-dvh relative flex flex-col overflow-hidden sm:border-x sm:border-gray-200">
+        <div className="flex flex-col items-center justify-center flex-1 min-h-0 overflow-y-auto p-6 pb-12 text-center space-y-6">
           <div className="w-20 h-20 bg-green-100 text-green-600 rounded-full flex items-center justify-center shadow-inner mb-2">
             <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
@@ -81,6 +84,7 @@ export default function AIIntakeScreen({ payload, setPayload, onNext, onBack }) 
           </button>
         </div>
       </div>
+      </div>
     );
   }
 
@@ -89,9 +93,10 @@ export default function AIIntakeScreen({ payload, setPayload, onNext, onBack }) 
   if (!currentQuestion) return null;
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 max-w-[360px] mx-auto relative overflow-hidden shadow-xl sm:border-x sm:border-gray-200">
+    <div className="min-h-dvh bg-gray-100 flex flex-col items-center justify-start">
+    <div className="w-full max-w-[360px] bg-gray-50 shadow-xl h-dvh relative flex flex-col overflow-hidden sm:border-x sm:border-gray-200">
       {/* Header */}
-      <div className="bg-white px-4 py-4 shadow-sm z-10 flex items-center border-b border-gray-200 sticky top-0">
+      <div className="bg-white px-4 py-4 shadow-sm z-10 flex items-center border-b border-gray-200 shrink-0">
         <button onClick={onBack} className="text-gray-500 hover:text-gray-700 transition-colors p-1 -ml-1">
           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
             <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
@@ -111,8 +116,8 @@ export default function AIIntakeScreen({ payload, setPayload, onNext, onBack }) 
         ></div>
       </div>
 
-      {/* Scrollable Content with extra padding for fixed footer */}
-      <div className="flex-1 overflow-y-auto px-5 py-8 pb-16">
+      {/* Scrollable Content — options sit in flow, pb clears the disclaimer bar */}
+      <div className="flex-1 min-h-0 overflow-y-auto px-5 py-8 pb-14">
         <h2 className="text-xl font-bold text-gray-900 mb-8 leading-tight">
           {currentQuestion.text}
         </h2>
@@ -138,6 +143,7 @@ export default function AIIntakeScreen({ payload, setPayload, onNext, onBack }) 
           ))}
         </div>
       </div>
+    </div>
     </div>
   );
 }

@@ -2,8 +2,9 @@ import React from 'react';
 
 export default function DashboardScreen({ onSelectFreshFiling, onSelectDefectiveReturn }) {
   return (
-    <div className="flex flex-col h-screen bg-gray-50 max-w-[360px] mx-auto relative overflow-hidden font-sans shadow-xl sm:border-x sm:border-gray-200">
-      
+    <div className="min-h-dvh bg-gray-100 flex flex-col items-center justify-start">
+    <div className="w-full max-w-[360px] bg-gray-50 shadow-xl h-dvh relative flex flex-col overflow-hidden font-sans sm:border-x sm:border-gray-200">
+
       {/* Header */}
       <div className="bg-[#113C7A] text-white px-5 pt-12 pb-8 rounded-b-3xl shadow-lg relative z-10">
         <div className="flex justify-between items-center mb-4">
@@ -28,7 +29,7 @@ export default function DashboardScreen({ onSelectFreshFiling, onSelectDefective
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 overflow-y-auto px-5 pt-8 pb-24 -mt-4 relative z-0">
+      <div className="flex-1 min-h-0 overflow-y-auto px-5 pt-8 pb-16 -mt-4 relative z-0">
         <h2 className="text-sm font-bold text-gray-800 uppercase tracking-wide mb-4 flex items-center gap-2">
           Select Service
         </h2>
@@ -85,6 +86,7 @@ export default function DashboardScreen({ onSelectFreshFiling, onSelectDefective
 
         </div>
       </div>
+    </div>
     </div>
   );
 }

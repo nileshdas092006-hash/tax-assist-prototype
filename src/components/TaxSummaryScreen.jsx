@@ -89,19 +89,22 @@ export default function TaxSummaryScreen({ payload, setPayload, onPayment, onVer
 
   if (loading) {
     return (
-      <div className="flex flex-col h-screen bg-gray-50 max-w-[360px] mx-auto relative overflow-hidden shadow-xl sm:border-x sm:border-gray-200">
-        <div className="flex-1 flex flex-col items-center justify-center p-6 space-y-4">
+      <div className="min-h-dvh bg-gray-100 flex flex-col items-center justify-start">
+      <div className="w-full max-w-[360px] bg-gray-50 shadow-xl h-dvh relative flex flex-col overflow-hidden sm:border-x sm:border-gray-200">
+        <div className="flex-1 min-h-0 flex flex-col items-center justify-center p-6 space-y-4">
           <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-600"></div>
           <p className="text-gray-500 animate-pulse text-sm text-center">
             AI is crunching your numbers and applying the latest tax slabs...
           </p>
         </div>
       </div>
+      </div>
     );
   }
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 max-w-[360px] mx-auto relative overflow-hidden shadow-xl sm:border-x sm:border-gray-200">
+    <div className="min-h-dvh bg-gray-100 flex flex-col items-center justify-start">
+    <div className="w-full max-w-[360px] bg-gray-50 shadow-xl h-dvh relative flex flex-col overflow-hidden sm:border-x sm:border-gray-200">
       {/* Header */}
       <div className="bg-white px-4 py-4 shadow-sm z-10 flex items-center border-b border-gray-200 sticky top-0">
         <button onClick={onBack} className="text-gray-500 hover:text-gray-700 transition-colors p-1 -ml-1">
@@ -115,8 +118,8 @@ export default function TaxSummaryScreen({ payload, setPayload, onPayment, onVer
         <div className="w-6"></div>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-5 py-6 pb-28">
-        
+      <div className="flex-1 min-h-0 overflow-y-auto px-5 py-6 pb-6">
+
         {/* Breakdown Card */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 mb-6 overflow-hidden">
           <div className="bg-blue-50 px-4 py-3 border-b border-blue-100 flex justify-between items-center">
@@ -173,7 +176,7 @@ export default function TaxSummaryScreen({ payload, setPayload, onPayment, onVer
       </div>
 
       {/* Action Button */}
-      <div className="absolute bottom-8 left-0 right-0 bg-white border-t border-gray-200 p-4 pb-6 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+      <div className="shrink-0 bg-white border-t border-gray-200 p-4 pb-12 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
         <button
           onClick={handleNext}
           className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3.5 px-6 rounded-xl shadow-md transition-all active:scale-95 flex justify-center items-center gap-2"
@@ -182,6 +185,7 @@ export default function TaxSummaryScreen({ payload, setPayload, onPayment, onVer
           <span>→</span>
         </button>
       </div>
+    </div>
     </div>
   );
 }

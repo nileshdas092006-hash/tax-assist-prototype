@@ -48,7 +48,8 @@ export default function PaymentScreen({ payload, setPayload, onNext, onBack }) {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-50 max-w-[360px] mx-auto relative overflow-hidden shadow-xl sm:border-x sm:border-gray-200">
+    <div className="min-h-dvh bg-gray-100 flex flex-col items-center justify-start">
+    <div className="w-full max-w-[360px] bg-gray-50 shadow-xl h-dvh relative flex flex-col overflow-hidden sm:border-x sm:border-gray-200">
       {/* Header */}
       <div className="bg-white px-4 py-4 shadow-sm z-10 flex items-center border-b border-gray-200 sticky top-0">
         {!isSuccess && !isSimulating && (
@@ -63,8 +64,8 @@ export default function PaymentScreen({ payload, setPayload, onNext, onBack }) {
         </h1>
       </div>
 
-      <div className="flex-1 overflow-y-auto px-5 py-6 pb-28">
-        
+      <div className="flex-1 min-h-0 overflow-y-auto px-5 py-6 pb-6">
+
         {/* Payable Amount Card */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 mb-6 text-center p-6">
           <p className="text-gray-500 text-sm font-medium mb-1 uppercase tracking-wide">Tax Payable</p>
@@ -139,7 +140,7 @@ export default function PaymentScreen({ payload, setPayload, onNext, onBack }) {
       </div>
 
       {/* Action Button */}
-      <div className="absolute bottom-8 left-0 right-0 bg-white border-t border-gray-200 p-4 pb-6 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+      <div className="shrink-0 bg-white border-t border-gray-200 p-4 pb-12 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
         {isSuccess ? (
           <button
             onClick={handleNext}
@@ -169,6 +170,7 @@ export default function PaymentScreen({ payload, setPayload, onNext, onBack }) {
           </button>
         )}
       </div>
+    </div>
     </div>
   );
 }
