@@ -15,34 +15,38 @@
  * (The flat ids in a bare spec — `gross_salary` — would collide across forms and
  * bypass this routing, so the bucket prefix is deliberate.)
  *
+ * Copy rule: plainLanguageQuestion and label are what the citizen reads. Keep
+ * them jargon-free — no bare section numbers (80C, 44ADA, Chapter VI-A). The
+ * `// Source:` comments map each field to the real schedule for maintainers.
+ *
  * Scope: individual / HUF returns only (ITR-1 to ITR-4). ITR-5/6/7 are excluded.
  * Every figure is treated in a deliberately simplified way — see DISCLAIMER.
  */
 
 export const ITR_SCHEMA_DISCLAIMER =
-  'Simplified — illustrative set of common fields based on AY 2026-27 rules, not the complete official form; verify actual requirements at incometax.gov.in.';
+  'Simplified — a common set of fields based on AY 2026-27 rules, not the full official form. Check the exact requirements at incometax.gov.in.';
 
 export const ITR_FORM_SCHEMAS = {
   'ITR-1': {
     name: 'ITR-1 (Sahaj)',
     description:
-      'Resident individual with income from salary or pension, one house property, and other sources such as interest — total income up to ₹50 lakh.',
+      'For someone whose income is mainly salary or pension, perhaps one house and some bank interest, and under ₹50 lakh in total.',
     requiredFields: [
       {
         // Source: Schedule S (Details of Income from Salary)
         id: 'income.gross_salary',
-        label: 'Gross Salary or Pension',
+        label: 'Salary or Pension',
         type: 'currency',
         plainLanguageQuestion:
-          'What was your total salary or pension income this year, before any deductions?',
+          'What was your total salary or pension for the year, before any tax or deductions were taken out?',
       },
       {
         // Source: Schedule HP (Details of Income from House Property)
         id: 'income.house_property_income',
-        label: 'Income from House Property',
+        label: 'Rental Income',
         type: 'currency',
         plainLanguageQuestion:
-          "What is the net annual income from your house property? Enter 0 if it's self-occupied or you don't own one.",
+          "How much rent did you receive this year from a property you own? Enter 0 if you don't own one, or you live in it yourself.",
       },
       {
         // Source: Schedule OS (Income from Other Sources)
@@ -50,7 +54,7 @@ export const ITR_FORM_SCHEMAS = {
         label: 'Interest Income',
         type: 'currency',
         plainLanguageQuestion:
-          'How much total interest did you earn from savings accounts and fixed deposits?',
+          'How much interest did you earn this year from bank savings accounts and fixed deposits?',
       },
       {
         // Source: Schedule OS (Income from Other Sources)
@@ -58,39 +62,39 @@ export const ITR_FORM_SCHEMAS = {
         label: 'Dividend Income',
         type: 'currency',
         plainLanguageQuestion:
-          'How much did you receive in dividends from shares or mutual funds?',
+          'How much did you receive this year as dividends from shares or mutual funds?',
       },
       {
         // Source: Schedule VI-A (Deductions under Chapter VI-A)
         id: 'deductions.total',
-        label: 'Total Deductions (Chapter VI-A)',
+        label: 'Tax-Saving Deductions',
         type: 'currency',
         plainLanguageQuestion:
-          'What is the total of all the deductions you are claiming — 80C, 80D, NPS and the like?',
+          'Add up the tax-saving amounts you want to claim — things like PPF, EPF, life and health insurance premiums, ELSS funds, and NPS. What is the total?',
       },
       {
         // Source: Schedule TDS (Details of Tax Deducted at Source)
         id: 'income.tds_deducted',
-        label: 'Tax Already Paid (TDS)',
+        label: 'Tax Already Paid',
         type: 'currency',
         plainLanguageQuestion:
-          'How much tax has already been deducted at source? You will find this on Form 16 or Form 26AS.',
+          'How much tax was already taken out before money reached you — from your salary, or from bank interest? Your Form 16 shows this.',
       },
       {
         // Source: Part A-GEN (Eligibility check — disqualifies from ITR-1 if yes)
         id: 'disqualifier.capital_gains_check',
-        label: 'Any Capital Gains?',
+        label: 'Sold Any Investments?',
         type: 'boolean',
         plainLanguageQuestion:
-          'Did you sell any property, shares, or mutual funds this year at a gain?',
+          'Did you sell any shares, mutual funds, or property this year and make a profit on it?',
       },
       {
         // Source: Part A-GEN (Eligibility check — disqualifies from ITR-1 if yes)
         id: 'disqualifier.foreign_assets_check',
-        label: 'Foreign Assets or Income?',
+        label: 'Anything Abroad?',
         type: 'boolean',
         plainLanguageQuestion:
-          'Do you own any assets outside India, or have any income from a foreign source?',
+          'Do you own any money, property, or investments outside India, or earn any income from abroad?',
       },
     ],
   },
@@ -98,30 +102,31 @@ export const ITR_FORM_SCHEMAS = {
   'ITR-2': {
     name: 'ITR-2',
     description:
-      'Individual or HUF with no business or professional income, but with capital gains, more than one house property, foreign assets, or total income above ₹50 lakh.',
+      'For people with no business income who have profit from selling investments or property, more than one house, assets abroad, or income above ₹50 lakh.',
     requiredFields: [
       {
         // Source: Schedule S (Details of Income from Salary)
         id: 'income.gross_salary',
-        label: 'Gross Salary or Pension',
+        label: 'Salary or Pension',
         type: 'currency',
-        plainLanguageQuestion: 'What was your total salary or pension income this year?',
+        plainLanguageQuestion:
+          'What was your total salary or pension for the year, before deductions?',
       },
       {
         // Source: Schedule HP (Details of Income from House Property)
         id: 'income.house_property_income',
-        label: 'Income from House Property',
+        label: 'Rental Income',
         type: 'currency',
         plainLanguageQuestion:
-          'What is the total net income from all your house properties (rent received, minus municipal taxes and the standard deduction)?',
+          'How much did you earn from renting out property this year, across all the properties you own? Enter 0 if none.',
       },
       {
         // Source: Schedule CG (Capital Gains)
         id: 'income.short_term_gains',
-        label: 'Capital Gains',
+        label: 'Profit from Selling Investments',
         type: 'currency',
         plainLanguageQuestion:
-          'What was your total capital gains this year from selling shares, mutual funds, or property?',
+          'How much profit did you make this year from selling shares, mutual funds, or property?',
       },
       {
         // Source: Schedule OS (Income from Other Sources)
@@ -129,29 +134,30 @@ export const ITR_FORM_SCHEMAS = {
         label: 'Interest & Other Income',
         type: 'currency',
         plainLanguageQuestion:
-          'How much did you earn from interest, deposits, and other sources?',
+          'How much did you earn this year from bank interest, deposits, and any other small income?',
       },
       {
         // Source: Schedule OS (Income from Other Sources)
         id: 'income.dividend_income',
         label: 'Dividend Income',
         type: 'currency',
-        plainLanguageQuestion: 'How much did you receive in dividends this year?',
+        plainLanguageQuestion: 'How much did you receive as dividends this year?',
       },
       {
         // Source: Schedule VI-A (Deductions under Chapter VI-A)
         id: 'deductions.total',
-        label: 'Total Deductions (Chapter VI-A)',
+        label: 'Tax-Saving Deductions',
         type: 'currency',
-        plainLanguageQuestion: 'What is the total of all the deductions you are claiming?',
+        plainLanguageQuestion:
+          'Add up your tax-saving claims — PPF, EPF, insurance premiums, ELSS, NPS and similar. What is the total?',
       },
       {
         // Source: Schedule TDS (Details of Tax Deducted at Source)
         id: 'income.tds_deducted',
-        label: 'Tax Already Paid (TDS)',
+        label: 'Tax Already Paid',
         type: 'currency',
         plainLanguageQuestion:
-          'How much tax was already deducted at source across all your income?',
+          'How much tax was already deducted before your income reached you this year?',
       },
       {
         // Source: Part A-GEN (Eligibility check — disqualifies from ITR-2 if yes)
@@ -159,7 +165,7 @@ export const ITR_FORM_SCHEMAS = {
         label: 'Any Business Income?',
         type: 'boolean',
         plainLanguageQuestion:
-          'Do you have any income from running a business or a profession? If yes, you will need ITR-3 instead.',
+          'Do you earn anything from running a business, trade, or profession of your own? If yes, a different return form applies.',
       },
     ],
   },
@@ -167,31 +173,31 @@ export const ITR_FORM_SCHEMAS = {
   'ITR-3': {
     name: 'ITR-3',
     description:
-      'Individual or HUF carrying on a business or profession and maintaining regular books of account.',
+      'For people running a business or profession who keep a full set of accounting records.',
     requiredFields: [
       {
         // Source: Schedule BP (Computation of income from business or profession)
         id: 'income.gross_receipts',
-        label: 'Net Profit from Business / Profession',
+        label: 'Business / Profession Profit',
         type: 'currency',
         plainLanguageQuestion:
-          'What was your net profit from your business or profession this year, after deducting business expenses?',
+          'What was your profit from your business or profession this year — the money you earned minus your business expenses?',
       },
       {
         // Source: Schedule S (Details of Income from Salary)
         id: 'income.gross_salary',
-        label: 'Salary or Pension (if any)',
+        label: 'Salary (if any)',
         type: 'currency',
         plainLanguageQuestion:
-          'Do you also draw a salary or pension? Enter the amount, or 0 if none.',
+          'Do you also receive a salary or pension? Enter the amount, or 0 if not.',
       },
       {
         // Source: Schedule CG (Capital Gains)
         id: 'income.short_term_gains',
-        label: 'Capital Gains',
+        label: 'Profit from Selling Investments',
         type: 'currency',
         plainLanguageQuestion:
-          'What were your total capital gains this year? Enter 0 if none.',
+          'How much profit did you make from selling shares, mutual funds, or property this year? Enter 0 if none.',
       },
       {
         // Source: Schedule OS (Income from Other Sources)
@@ -199,39 +205,39 @@ export const ITR_FORM_SCHEMAS = {
         label: 'Interest & Other Income',
         type: 'currency',
         plainLanguageQuestion:
-          'How much did you earn from interest, deposits, and other sources?',
+          'How much did you earn this year from bank interest and other small income?',
       },
       {
         // Source: Schedule VI-A (Deductions under Chapter VI-A)
         id: 'deductions.total',
-        label: 'Total Deductions (Chapter VI-A)',
+        label: 'Tax-Saving Deductions',
         type: 'currency',
         plainLanguageQuestion:
-          'What is the total of the deductions you are claiming under 80C, 80D and similar sections?',
+          'Add up the tax-saving amounts you want to claim — PPF, EPF, insurance, ELSS, NPS and similar.',
       },
       {
         // Source: Schedule TDS (Details of Tax Deducted at Source)
         id: 'income.tds_deducted',
-        label: 'Tax Already Paid (TDS)',
+        label: 'Tax Already Paid',
         type: 'currency',
         plainLanguageQuestion:
-          'How much tax was already deducted at source across all your income?',
+          'How much tax was already deducted from your income before it reached you this year?',
       },
       {
         // Source: Part A-GEN (General Information)
         id: 'disqualifier.books_maintained_check',
-        label: 'Books of Account Maintained?',
+        label: 'Keep Full Accounts?',
         type: 'boolean',
         plainLanguageQuestion:
-          'Do you keep regular books of account for your business or profession?',
+          'Do you keep a complete set of accounting records for your business — a full record of all income and expenses?',
       },
       {
         // Source: Part A-GEN (General Information - Audit Information)
         id: 'disqualifier.audit_check',
-        label: 'Tax Audit Applicable?',
+        label: 'Accounts Audited?',
         type: 'boolean',
         plainLanguageQuestion:
-          'Is your business or profession required to undergo a tax audit this year?',
+          'Does an accountant have to formally audit your business accounts this year? This is usually required only for larger businesses.',
       },
     ],
   },
@@ -239,62 +245,63 @@ export const ITR_FORM_SCHEMAS = {
   'ITR-4': {
     name: 'ITR-4 (Sugam)',
     description:
-      'Resident with presumptive business or professional income under Sections 44AD / 44ADA / 44AE, with total income up to ₹50 lakh.',
+      'For smaller businesses and professionals who use the simple scheme, where tax is based on a set share of income, with total income up to ₹50 lakh.',
     requiredFields: [
       {
         // Source: Schedule BP (Computation of income from business or profession - Section 44AD/ADA/AE)
         id: 'income.gross_receipts',
-        label: 'Presumptive Turnover / Gross Receipts',
+        label: 'Business / Profession Receipts',
         type: 'currency',
         plainLanguageQuestion:
-          'What was your total business turnover or professional gross receipts for the year? Presumptive income is worked out as a fixed percentage of this figure.',
+          'What was the total amount you received from your business or profession this year, before taking out any expenses?',
       },
       {
-        // Source: Schedule BP (Computation of income from business or profession)
+        // Source: Schedule BP (44ADA profession vs 44AD business — sets the deemed-profit rate)
         id: 'disqualifier.presumptive_profession_check',
-        label: 'Profession under Section 44ADA?',
+        label: 'Paid for Your Expertise?',
         type: 'boolean',
         plainLanguageQuestion:
-          'Are you a professional declaring income under Section 44ADA? Answer No if you run a business under 44AD, or a goods-transport business under 44AE.',
+          'Do you earn by offering professional services — like a doctor, lawyer, architect, accountant, engineer, designer, or freelance consultant? Choose No if you run a shop, trade, manufacturing, or transport business.',
       },
       {
         // Source: Schedule S (Details of Income from Salary)
         id: 'income.gross_salary',
-        label: 'Salary or Pension (if any)',
+        label: 'Salary (if any)',
         type: 'currency',
         plainLanguageQuestion:
-          'Do you also draw a salary or pension? Enter the amount, or 0 if none.',
+          'Do you also receive a salary or pension? Enter the amount, or 0 if not.',
       },
       {
         // Source: Schedule OS (Income from Other Sources)
         id: 'income.savings_and_fd_interest',
-        label: 'Interest & Other Income',
+        label: 'Interest Income',
         type: 'currency',
         plainLanguageQuestion:
-          'How much did you earn from interest and deposits this year?',
+          'How much did you earn from bank interest and deposits this year?',
       },
       {
         // Source: Schedule VI-A (Deductions under Chapter VI-A)
         id: 'deductions.total',
-        label: 'Total Deductions (Chapter VI-A)',
+        label: 'Tax-Saving Deductions',
         type: 'currency',
         plainLanguageQuestion:
-          'What is the total of the deductions you are claiming — 80C, 80D and similar?',
+          'Add up your tax-saving claims — PPF, EPF, insurance premiums, ELSS, NPS and similar.',
       },
       {
         // Source: Schedule TDS (Details of Tax Deducted at Source)
         id: 'income.tds_deducted',
-        label: 'Tax Already Paid (TDS)',
+        label: 'Tax Already Paid',
         type: 'currency',
-        plainLanguageQuestion: 'How much tax was already deducted at source?',
+        plainLanguageQuestion:
+          'How much tax was already deducted from your income before it reached you this year?',
       },
       {
-        // Source: Part A-GEN (Eligibility check)
+        // Source: Part A-GEN (Eligibility check for the presumptive scheme)
         id: 'disqualifier.presumptive_eligible_check',
-        label: 'Presumptive Scheme Confirmed?',
+        label: 'Use the Simple Scheme?',
         type: 'boolean',
         plainLanguageQuestion:
-          'Do you confirm you are declaring profit on a presumptive basis and are not maintaining full books of account?',
+          'Are you happy for your tax to be worked out from a set percentage of your income, instead of preparing detailed profit-and-loss accounts? Most small businesses and professionals choose this.',
       },
     ],
   },

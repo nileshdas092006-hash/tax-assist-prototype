@@ -20,22 +20,22 @@ export const FORM_DETAILS = {
   'ITR-1': {
     name: 'ITR-1 (Sahaj)',
     blurb:
-      'For a resident individual whose income is salary or pension, one house property, and other income such as bank interest — with total income up to ₹50 lakh.',
+      'For someone whose income is mainly salary or pension, perhaps one house and some bank interest, and under ₹50 lakh in total.',
   },
   'ITR-2': {
     name: 'ITR-2',
     blurb:
-      'For an individual or HUF with no business or professional income, but with capital gains, more than one house property, foreign assets, unlisted shares, or total income above ₹50 lakh.',
+      'For people with no business income who have profit from selling investments or property, more than one house, assets abroad, or income above ₹50 lakh.',
   },
   'ITR-3': {
     name: 'ITR-3',
     blurb:
-      'For an individual or HUF carrying on a business or profession and maintaining regular books of account.',
+      'For people running a business or profession who keep a full set of accounting records.',
   },
   'ITR-4': {
     name: 'ITR-4 (Sugam)',
     blurb:
-      'For a resident with presumptive business or professional income under Sections 44AD / 44ADA / 44AE, and total income up to ₹50 lakh.',
+      'For smaller businesses and professionals who use the simple scheme, where tax is worked out from a set share of income, with total income up to ₹50 lakh.',
   },
 };
 
@@ -44,31 +44,31 @@ export const FORM_DETECTION_TREE = {
   questions: {
     business_income: {
       id: 'business_income',
-      text: 'Do you have income from a business or profession (not just a salary)?',
-      help: 'Freelancing, consulting, a shop or firm, or trading run as a business all count.',
-      yes: { next: 'presumptive', recap: 'Has business or professional income' },
-      no: { next: 'capital_or_foreign', recap: 'Salary / pension only — no business income' },
+      text: 'Do you earn money from your own business or profession — not just a salary?',
+      help: 'Freelancing, consulting, a shop, a firm, or trading run as a business all count.',
+      yes: { next: 'presumptive', recap: 'Earns from a business or profession' },
+      no: { next: 'capital_or_foreign', recap: 'Salary or pension only — no business income' },
     },
     presumptive: {
       id: 'presumptive',
-      text: 'Is that business under presumptive taxation (no full books of account), with turnover under ₹2 crore, or professional receipts under ₹50 lakh?',
-      help: 'Presumptive taxation is Sections 44AD, 44ADA and 44AE — you declare a fixed share of turnover as profit instead of keeping detailed accounts.',
-      yes: { form: 'ITR-4', recap: 'Business is under the presumptive scheme' },
-      no: { form: 'ITR-3', recap: 'Business keeps regular books of account' },
+      text: 'For that business or profession, do you want the simple scheme — where you declare a set percentage of your income as profit and skip detailed account books?',
+      help: 'This suits smaller businesses and professionals. Instead of keeping full accounts, you treat a fixed share of your total receipts as your taxable profit.',
+      yes: { form: 'ITR-4', recap: 'Wants the simple, set-percentage scheme' },
+      no: { form: 'ITR-3', recap: 'Keeps full business accounts' },
     },
     capital_or_foreign: {
       id: 'capital_or_foreign',
-      text: 'Do you have capital gains beyond small listed-equity amounts, own any foreign assets, or hold unlisted company shares?',
-      help: 'Sale of property, mutual funds or shares above the small exempt limit; ESOPs or stock in a company outside India; any overseas bank account or investment.',
-      yes: { form: 'ITR-2', recap: 'Has capital gains, foreign assets, or unlisted shares' },
-      no: { next: 'income_threshold', recap: 'No capital gains, foreign assets, or unlisted shares' },
+      text: 'Did you sell shares, mutual funds, or property at a profit this year, or do you own anything abroad or shares in a company that is not listed on a stock exchange?',
+      help: 'This covers profit from selling investments or property, any bank account or asset outside India, and shares in companies that are not publicly listed.',
+      yes: { form: 'ITR-2', recap: 'Has investment/property profit, foreign assets, or unlisted shares' },
+      no: { next: 'income_threshold', recap: 'None of: investment profit, foreign assets, unlisted shares' },
     },
     income_threshold: {
       id: 'income_threshold',
-      text: 'Is your total income above ₹50 lakh, or do you own more than two house properties?',
-      help: 'Total income is before deductions but after exemptions — salary plus interest plus any other income.',
-      yes: { form: 'ITR-2', recap: 'Income above ₹50 lakh or more than two house properties' },
-      no: { form: 'ITR-1', recap: 'Income up to ₹50 lakh, up to two house properties' },
+      text: 'Is your total income for the year above ₹50 lakh, or do you own more than two houses?',
+      help: 'Add up everything — salary, interest, rent, and any other income — before tax-saving deductions.',
+      yes: { form: 'ITR-2', recap: 'Income above ₹50 lakh, or more than two houses' },
+      no: { form: 'ITR-1', recap: 'Income up to ₹50 lakh, and up to two houses' },
     },
   },
 };
