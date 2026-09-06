@@ -1,9 +1,9 @@
 # TaxAssist — AI-Guided Income Tax Filing & Defective Return Fixer
 
-**A prototype built for [Hackathon Name]'s Builder Brief**, targeting the Income Tax e-Filing Portal (incometax.gov.in).
+**A prototype targeting the Income Tax e-Filing Portal (incometax.gov.in).
 
 **Live demo:** https://tax-assist-prototype.vercel.app/
-**Team:** Nilesh Kumar Das (Das), CSE, IIT Guwahati
+**Team:** Nilesh Kumar Das, CSE, IIT Guwahati
 
 ---
 
