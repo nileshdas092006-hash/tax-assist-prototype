@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { ITR_FORM_SCHEMAS, ITR_SCHEMA_DISCLAIMER } from '../data/itrFormSchemas';
+import WhyWeAsk from './WhyWeAsk';
 
 /**
  * One Q&A engine for every ITR form. It reads `requiredFields` from
@@ -334,6 +335,8 @@ export default function DynamicFormFillerScreen({ payload, setPayload, onNext, o
               )}
             </div>
           )}
+
+          <WhyWeAsk>{field.whyWeAsk}</WhyWeAsk>
         </div>
 
         {/* Live preview — updates as currency answers come in */}

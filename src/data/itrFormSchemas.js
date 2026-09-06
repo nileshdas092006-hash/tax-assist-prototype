@@ -17,7 +17,8 @@
  *
  * Copy rule: plainLanguageQuestion and label are what the citizen reads. Keep
  * them jargon-free — no bare section numbers (80C, 44ADA, Chapter VI-A). The
- * `// Source:` comments map each field to the real schedule for maintainers.
+ * optional `whyWeAsk` string holds the official section reference, shown only
+ * when the user taps "Why we ask". The `// Source:` comments are for maintainers.
  *
  * Scope: individual / HUF returns only (ITR-1 to ITR-4). ITR-5/6/7 are excluded.
  * Every figure is treated in a deliberately simplified way — see DISCLAIMER.
@@ -70,7 +71,9 @@ export const ITR_FORM_SCHEMAS = {
         label: 'Tax-Saving Deductions',
         type: 'currency',
         plainLanguageQuestion:
-          'Add up the tax-saving amounts you want to claim — things like PPF, EPF, life and health insurance premiums, ELSS funds, and NPS. What is the total?',
+          'Add up the tax-saving amounts you want to claim — money you put into things like Provident Fund (PF), PPF, life or health insurance premiums, ELSS mutual funds, or NPS. What is the total?',
+        whyWeAsk:
+          'These are the deductions allowed under Chapter VI-A of the Income Tax Act — mainly Section 80C (investments and premiums), Section 80D (health insurance) and Section 80CCD (NPS).',
       },
       {
         // Source: Schedule TDS (Details of Tax Deducted at Source)
@@ -78,7 +81,9 @@ export const ITR_FORM_SCHEMAS = {
         label: 'Tax Already Paid',
         type: 'currency',
         plainLanguageQuestion:
-          'How much tax was already taken out before money reached you — from your salary, or from bank interest? Your Form 16 shows this.',
+          'Some tax may already have been paid on your behalf this year — your employer takes it from your salary, and your bank takes it from interest. How much was deducted this way? Your Form 16 or a bank interest certificate shows the amount.',
+        whyWeAsk:
+          'This is TDS — Tax Deducted at Source (Schedule TDS on the return). It counts toward the tax you owe, so it is subtracted at the end and you pay only the balance.',
       },
       {
         // Source: Part A-GEN (Eligibility check — disqualifies from ITR-1 if yes)
@@ -149,7 +154,9 @@ export const ITR_FORM_SCHEMAS = {
         label: 'Tax-Saving Deductions',
         type: 'currency',
         plainLanguageQuestion:
-          'Add up your tax-saving claims — PPF, EPF, insurance premiums, ELSS, NPS and similar. What is the total?',
+          'Add up the tax-saving amounts you want to claim — money you put into things like Provident Fund (PF), PPF, life or health insurance premiums, ELSS mutual funds, or NPS. What is the total?',
+        whyWeAsk:
+          'These are the deductions allowed under Chapter VI-A of the Income Tax Act — mainly Section 80C (investments and premiums), Section 80D (health insurance) and Section 80CCD (NPS).',
       },
       {
         // Source: Schedule TDS (Details of Tax Deducted at Source)
@@ -157,7 +164,9 @@ export const ITR_FORM_SCHEMAS = {
         label: 'Tax Already Paid',
         type: 'currency',
         plainLanguageQuestion:
-          'How much tax was already deducted before your income reached you this year?',
+          'Some tax may already have been paid on your behalf this year — an employer takes it from salary, a bank takes it from interest, a buyer takes it on a property sale. How much was deducted this way? Your Form 16, Form 26AS or an interest certificate shows the amount.',
+        whyWeAsk:
+          'This is TDS — Tax Deducted at Source (Schedule TDS). It counts toward the tax you owe, so it is subtracted at the end and you pay only the balance.',
       },
       {
         // Source: Part A-GEN (Eligibility check — disqualifies from ITR-2 if yes)
@@ -166,6 +175,8 @@ export const ITR_FORM_SCHEMAS = {
         type: 'boolean',
         plainLanguageQuestion:
           'Do you earn anything from running a business, trade, or profession of your own? If yes, a different return form applies.',
+        whyWeAsk:
+          'Any business or professional income rules out ITR-2 — you would file ITR-3 (with full accounts) or ITR-4 (simple scheme) instead.',
       },
     ],
   },
@@ -213,7 +224,9 @@ export const ITR_FORM_SCHEMAS = {
         label: 'Tax-Saving Deductions',
         type: 'currency',
         plainLanguageQuestion:
-          'Add up the tax-saving amounts you want to claim — PPF, EPF, insurance, ELSS, NPS and similar.',
+          'Add up the tax-saving amounts you want to claim — money you put into things like Provident Fund (PF), PPF, life or health insurance premiums, ELSS mutual funds, or NPS. What is the total?',
+        whyWeAsk:
+          'These are the deductions allowed under Chapter VI-A — mainly Section 80C (investments and premiums), Section 80D (health insurance) and Section 80CCD (NPS).',
       },
       {
         // Source: Schedule TDS (Details of Tax Deducted at Source)
@@ -221,7 +234,9 @@ export const ITR_FORM_SCHEMAS = {
         label: 'Tax Already Paid',
         type: 'currency',
         plainLanguageQuestion:
-          'How much tax was already deducted from your income before it reached you this year?',
+          'Some tax may already have been paid on your behalf this year — from salary, from bank interest, or on your business receipts. How much was deducted this way? Your Form 16, Form 26AS or an interest certificate shows the amount.',
+        whyWeAsk:
+          'This is TDS — Tax Deducted at Source (Schedule TDS). It counts toward the tax you owe, so it is subtracted at the end.',
       },
       {
         // Source: Part A-GEN (General Information)
@@ -230,6 +245,8 @@ export const ITR_FORM_SCHEMAS = {
         type: 'boolean',
         plainLanguageQuestion:
           'Do you keep a complete set of accounting records for your business — a full record of all income and expenses?',
+        whyWeAsk:
+          'ITR-3 is the form for business or professional income where you maintain regular books of account (Schedule BP).',
       },
       {
         // Source: Part A-GEN (General Information - Audit Information)
@@ -238,6 +255,8 @@ export const ITR_FORM_SCHEMAS = {
         type: 'boolean',
         plainLanguageQuestion:
           'Does an accountant have to formally audit your business accounts this year? This is usually required only for larger businesses.',
+        whyWeAsk:
+          'A tax audit under Section 44AB is generally required once turnover crosses ₹1 crore (₹10 crore if nearly all receipts are digital), or professional receipts cross ₹50 lakh.',
       },
     ],
   },
@@ -254,6 +273,8 @@ export const ITR_FORM_SCHEMAS = {
         type: 'currency',
         plainLanguageQuestion:
           'What was the total amount you received from your business or profession this year, before taking out any expenses?',
+        whyWeAsk:
+          'In the simple scheme your taxable profit is a fixed percentage of this figure — you do not deduct actual expenses.',
       },
       {
         // Source: Schedule BP (44ADA profession vs 44AD business — sets the deemed-profit rate)
@@ -262,6 +283,8 @@ export const ITR_FORM_SCHEMAS = {
         type: 'boolean',
         plainLanguageQuestion:
           'Do you earn by offering professional services — like a doctor, lawyer, architect, accountant, engineer, designer, or freelance consultant? Choose No if you run a shop, trade, manufacturing, or transport business.',
+        whyWeAsk:
+          'This sets your deemed-profit rate: professionals fall under Section 44ADA (half of receipts treated as profit); trades and shops under Section 44AD; goods transport under Section 44AE.',
       },
       {
         // Source: Schedule S (Details of Income from Salary)
@@ -285,7 +308,9 @@ export const ITR_FORM_SCHEMAS = {
         label: 'Tax-Saving Deductions',
         type: 'currency',
         plainLanguageQuestion:
-          'Add up your tax-saving claims — PPF, EPF, insurance premiums, ELSS, NPS and similar.',
+          'Add up the tax-saving amounts you want to claim — money you put into things like Provident Fund (PF), PPF, life or health insurance premiums, ELSS mutual funds, or NPS. What is the total?',
+        whyWeAsk:
+          'These are the deductions allowed under Chapter VI-A — mainly Section 80C (investments and premiums), Section 80D (health insurance) and Section 80CCD (NPS).',
       },
       {
         // Source: Schedule TDS (Details of Tax Deducted at Source)
@@ -293,13 +318,17 @@ export const ITR_FORM_SCHEMAS = {
         label: 'Tax Already Paid',
         type: 'currency',
         plainLanguageQuestion:
-          'How much tax was already deducted from your income before it reached you this year?',
+          'Some tax may already have been paid on your behalf this year — from salary, from bank interest, or on your business receipts. How much was deducted this way? Your Form 16, Form 26AS or an interest certificate shows the amount.',
+        whyWeAsk:
+          'This is TDS — Tax Deducted at Source (Schedule TDS). It counts toward the tax you owe, so it is subtracted at the end.',
       },
       {
         // Source: Part A-GEN (Eligibility check for the presumptive scheme)
         id: 'disqualifier.presumptive_eligible_check',
         label: 'Use the Simple Scheme?',
         type: 'boolean',
+        whyWeAsk:
+          'This is the presumptive-taxation scheme (Sections 44AD / 44ADA / 44AE) — you skip detailed accounts and declare a fixed percentage of receipts as profit.',
         plainLanguageQuestion:
           'Are you happy for your tax to be worked out from a set percentage of your income, instead of preparing detailed profit-and-loss accounts? Most small businesses and professionals choose this.',
       },

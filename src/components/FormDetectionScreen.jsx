@@ -6,6 +6,7 @@ import {
   answeredSteps,
   progress,
 } from '../data/formDetectionQuestions';
+import WhyWeAsk from './WhyWeAsk';
 
 const BackArrow = () => (
   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
@@ -192,6 +193,7 @@ export default function FormDetectionScreen({ payload, setPayload, onNext, onBac
           {current.help && (
             <p className="text-sm text-gray-500 leading-relaxed mt-3">{current.help}</p>
           )}
+          <WhyWeAsk>{current.whyWeAsk}</WhyWeAsk>
 
           <div className="flex flex-col space-y-3 mt-8">
             {[

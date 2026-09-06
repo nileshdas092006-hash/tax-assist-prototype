@@ -46,6 +46,8 @@ export const FORM_DETECTION_TREE = {
       id: 'business_income',
       text: 'Do you earn money from your own business or profession — not just a salary?',
       help: 'Freelancing, consulting, a shop, a firm, or trading run as a business all count.',
+      whyWeAsk:
+        'Any business or professional income rules out ITR-1 and ITR-2 — it needs ITR-3 (full accounts) or ITR-4 (the simple scheme).',
       yes: { next: 'presumptive', recap: 'Earns from a business or profession' },
       no: { next: 'capital_or_foreign', recap: 'Salary or pension only — no business income' },
     },
@@ -53,6 +55,8 @@ export const FORM_DETECTION_TREE = {
       id: 'presumptive',
       text: 'For that business or profession, do you want the simple scheme — where you declare a set percentage of your income as profit and skip detailed account books?',
       help: 'This suits smaller businesses and professionals. Instead of keeping full accounts, you treat a fixed share of your total receipts as your taxable profit.',
+      whyWeAsk:
+        '"Yes" leads to ITR-4 and presumptive taxation (Sections 44AD / 44ADA / 44AE). "No" leads to ITR-3, filed with regular books of account.',
       yes: { form: 'ITR-4', recap: 'Wants the simple, set-percentage scheme' },
       no: { form: 'ITR-3', recap: 'Keeps full business accounts' },
     },
@@ -60,6 +64,8 @@ export const FORM_DETECTION_TREE = {
       id: 'capital_or_foreign',
       text: 'Did you sell shares, mutual funds, or property at a profit this year, or do you own anything abroad or shares in a company that is not listed on a stock exchange?',
       help: 'This covers profit from selling investments or property, any bank account or asset outside India, and shares in companies that are not publicly listed.',
+      whyWeAsk:
+        'Capital gains, any foreign asset (Schedule FA), or unlisted shares each require ITR-2 instead of ITR-1.',
       yes: { form: 'ITR-2', recap: 'Has investment/property profit, foreign assets, or unlisted shares' },
       no: { next: 'income_threshold', recap: 'None of: investment profit, foreign assets, unlisted shares' },
     },
@@ -67,6 +73,8 @@ export const FORM_DETECTION_TREE = {
       id: 'income_threshold',
       text: 'Is your total income for the year above ₹50 lakh, or do you own more than two houses?',
       help: 'Add up everything — salary, interest, rent, and any other income — before tax-saving deductions.',
+      whyWeAsk:
+        'ITR-1 (Sahaj) is only allowed up to ₹50 lakh total income and two house properties; above either limit, ITR-2 applies.',
       yes: { form: 'ITR-2', recap: 'Income above ₹50 lakh, or more than two houses' },
       no: { form: 'ITR-1', recap: 'Income up to ₹50 lakh, and up to two houses' },
     },
