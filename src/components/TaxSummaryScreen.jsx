@@ -11,6 +11,8 @@ export default function TaxSummaryScreen({ payload, setPayload, onPayment, onVer
 
     const gross = 
       (Number(income.gross_salary) || 0) + 
+      (Number(income.gross_receipts) || 0) + 
+      (Number(income.short_term_gains) || 0) + 
       (Number(income.savings_and_fd_interest) || 0) + 
       (Number(income.dividend_income) || 0);
     

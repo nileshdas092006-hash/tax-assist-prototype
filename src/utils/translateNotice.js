@@ -9,10 +9,16 @@
  */
 export async function fetchNoticeTranslation(rawLegalText) {
   try {
+    let isDevMode = false;
+    if (typeof window !== 'undefined') {
+      const urlParams = new URLSearchParams(window.location.search);
+      isDevMode = urlParams.get('devmode') === 'verify';
+    }
+
     const response = await fetch('/api/translate-notice', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ rawLegalText }),
+      body: JSON.stringify({ rawLegalText, devmode: isDevMode }),
     });
 
     if (!response.ok) {

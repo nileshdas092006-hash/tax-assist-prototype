@@ -1,18 +1,22 @@
 {
-  "gross_salary": {
-    "amount": 750000,
-    "source": "Form 16 / Employer"
+  "profile_salary": {
+    "gross_salary": { "amount": 750000, "source": "From Form 16" },
+    "tds_deducted": { "amount": 22500, "source": "From Form 26AS" },
+    "savings_and_fd_interest": { "amount": 14200, "source": "Bank Reporting" },
+    "dividend_income": { "amount": 1800, "source": "CAMS/KFintech" },
+    "type": "Salary only"
   },
-  "tds_deducted": {
-    "amount": 22500,
-    "source": "26AS"
+  "profile_business": {
+    "gross_receipts": { "amount": 1200000, "source": "Bank Statement Analysis" },
+    "tds_deducted": { "amount": 0, "source": "From Form 26AS" },
+    "presumptive_tax_eligible": true,
+    "type": "Business/Freelance"
   },
-  "savings_and_fd_interest": {
-    "amount": 14200,
-    "source": "Bank Reporting"
-  },
-  "dividend_income": {
-    "amount": 1800,
-    "source": "CAMS / KFintech"
+  "profile_capital_gains": {
+    "gross_salary": { "amount": 600000, "source": "From Form 16" },
+    "tds_deducted": { "amount": 15000, "source": "From Form 26AS" },
+    "short_term_gains": { "amount": 150000, "source": "Broker Statement" },
+    "savings_and_fd_interest": { "amount": 8000, "source": "Bank Reporting" },
+    "type": "Salary + Trading"
   }
 }

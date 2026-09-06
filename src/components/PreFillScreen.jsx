@@ -1,18 +1,25 @@
 import React, { useState } from 'react';
 import mockAIS from '../data/mockAIS.json';
 
-export default function PreFillScreen({ setPayload, onNext, onBack }) {
+export default function PreFillScreen({ payload, setPayload, onNext, onBack }) {
+  const profileKey = payload?.selected_profile || 'profile_salary';
+  const profileData = mockAIS[profileKey] || mockAIS.profile_salary;
+
   // Initialize local state with mock AIS data so users can edit it
   const [incomeData, setIncomeData] = useState({
-    gross_salary: mockAIS.gross_salary.amount,
-    tds_deducted: mockAIS.tds_deducted.amount,
-    savings_and_fd_interest: mockAIS.savings_and_fd_interest.amount,
-    dividend_income: mockAIS.dividend_income.amount,
+    gross_salary: profileData.gross_salary?.amount || 0,
+    gross_receipts: profileData.gross_receipts?.amount || 0,
+    short_term_gains: profileData.short_term_gains?.amount || 0,
+    tds_deducted: profileData.tds_deducted?.amount || 0,
+    savings_and_fd_interest: profileData.savings_and_fd_interest?.amount || 0,
+    dividend_income: profileData.dividend_income?.amount || 0,
   });
 
   // Track which fields are in edit mode
   const [editMode, setEditMode] = useState({
     gross_salary: false,
+    gross_receipts: false,
+    short_term_gains: false,
     tds_deducted: false,
     savings_and_fd_interest: false,
     dividend_income: false,
@@ -131,10 +138,12 @@ export default function PreFillScreen({ setPayload, onNext, onBack }) {
 
         {/* Cards */}
         <div className="space-y-4">
-          {renderCard('gross_salary', 'Gross Salary', mockAIS.gross_salary.source)}
-          {renderCard('tds_deducted', 'TDS Deducted', mockAIS.tds_deducted.source)}
-          {renderCard('savings_and_fd_interest', 'Savings & FD Interest', mockAIS.savings_and_fd_interest.source)}
-          {renderCard('dividend_income', 'Dividend Income', mockAIS.dividend_income.source)}
+          {profileData.gross_salary && renderCard('gross_salary', 'Gross Salary', profileData.gross_salary.source)}
+          {profileData.gross_receipts && renderCard('gross_receipts', 'Gross Receipts', profileData.gross_receipts.source)}
+          {profileData.short_term_gains && renderCard('short_term_gains', 'Short Term Gains', profileData.short_term_gains.source)}
+          {profileData.tds_deducted && renderCard('tds_deducted', 'TDS Deducted', profileData.tds_deducted.source)}
+          {profileData.savings_and_fd_interest && renderCard('savings_and_fd_interest', 'Savings & FD Interest', profileData.savings_and_fd_interest.source)}
+          {profileData.dividend_income && renderCard('dividend_income', 'Dividend Income', profileData.dividend_income.source)}
         </div>
       </div>
 

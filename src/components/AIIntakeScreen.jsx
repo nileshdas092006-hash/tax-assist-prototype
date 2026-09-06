@@ -39,8 +39,14 @@ export default function AIIntakeScreen({ payload, setPayload, onNext, onBack }) 
     } else {
       // Finished all questions
       const form = determineITRForm(newPayload);
+      let profile = 'profile_salary';
+      if (newPayload.employment_type === 'business') {
+        profile = 'profile_business';
+      } else if (newPayload.capital_gains === 'yes') {
+        profile = 'profile_capital_gains';
+      }
       setRecommendedForm(form);
-      setPayload({ ...newPayload, recommended_form: form });
+      setPayload({ ...newPayload, recommended_form: form, selected_profile: profile });
       setIsComplete(true);
     }
   };

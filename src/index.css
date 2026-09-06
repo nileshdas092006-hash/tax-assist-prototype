@@ -8,3 +8,10 @@ html, body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
   background-color: #f3f4f6; /* light gray background */
 }
+
+/* Dev-only verification banner (?devmode=verify) is a fixed 2rem strip at the
+   top. Offset the content by that height and shrink the full-viewport screens
+   to match, so every action row still clears the fixed disclaimer bar. */
+.app-devmode { padding-top: 2rem; }
+.app-devmode .min-h-dvh { min-height: calc(100dvh - 2rem); }
+.app-devmode .h-dvh { height: calc(100dvh - 2rem); }

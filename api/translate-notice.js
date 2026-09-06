@@ -6,6 +6,11 @@ const openai = new OpenAI({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
+const openrouter = new OpenAI({
+  baseURL: "https://openrouter.ai/api/v1",
+  apiKey: process.env.OPENROUTER_API_KEY || "dummy",
+});
+
 // Exact system prompt carried over verbatim from the previous client implementation
 // (src/utils/translateNotice.js), including its original line breaks.
 const SYSTEM_PROMPT = `You are translating an Indian Income Tax defective-return notice for a non-expert citizen. Given the raw official notice text, output JSON with exactly three keys:
@@ -29,9 +34,9 @@ export default async function handler(req, res) {
     return res.status(500).json({ error: 'Server is not configured with OPENAI_API_KEY.' });
   }
 
-  // Vercel parses JSON bodies automatically, but accept a raw string too.
   const body = typeof req.body === 'string' ? safeParse(req.body) : (req.body || {});
   const rawLegalText = body && body.rawLegalText;
+  const devmode = body && body.devmode === true;
 
   if (!rawLegalText || typeof rawLegalText !== 'string') {
     return res.status(400).json({ error: 'Request body must include a "rawLegalText" string.' });
@@ -52,6 +57,26 @@ export default async function handler(req, res) {
     const parsed = JSON.parse(content);
     return res.status(200).json(parsed);
   } catch (error) {
+    if (devmode && process.env.OPENROUTER_API_KEY) {
+      try {
+        console.log("OpenAI failed. devmode=true, calling OpenRouter fallback...");
+        const fallbackResponse = await openrouter.chat.completions.create({
+          model: 'google/gemini-2.5-flash',
+          response_format: { type: 'json_object' },
+          messages: [
+            { role: 'system', content: SYSTEM_PROMPT },
+            { role: 'user', content: rawLegalText },
+          ],
+          temperature: 0.3,
+        });
+        const content = fallbackResponse.choices[0].message.content;
+        return res.status(200).json(JSON.parse(content));
+      } catch (fallbackError) {
+        console.error('OpenRouter fallback failed:', fallbackError);
+        return res.status(502).json({ error: 'Translation service unavailable.' });
+      }
+    }
+
     console.error('translate-notice: OpenAI call failed:', error);
     const status = error && error.status === 429 ? 429 : 502;
     return res.status(status).json({ error: 'Translation service unavailable.' });

@@ -107,8 +107,21 @@ function App() {
     goToStep(0)
   }, [goToStep])
 
+  const [isDevMode] = useState(() => {
+    try {
+      return new URLSearchParams(window.location.search).get('devmode') === 'verify';
+    } catch {
+      return false;
+    }
+  });
+
   return (
-    <div>
+    <div className={isDevMode ? 'app-devmode' : undefined}>
+      {isDevMode && (
+        <div className="fixed top-0 inset-x-0 h-8 flex items-center justify-center bg-yellow-100 text-yellow-800 text-[11px] font-bold text-center px-4 z-[60] border-b border-yellow-200 shadow-sm">
+          Verification Mode: Secondary LLM Provider Active.
+        </div>
+      )}
       {activeStep === 0 && (
         <DashboardScreen
           onSelectDefectiveReturn={() => goToStep(1)}
