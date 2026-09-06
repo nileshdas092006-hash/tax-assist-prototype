@@ -3,10 +3,39 @@ import React, { useState } from 'react';
 export default function PaymentScreen({ payload, setPayload, onNext, onBack }) {
   const [selectedMethod, setSelectedMethod] = useState('upi');
   const [isSimulating, setIsSimulating] = useState(false);
-  const [isSuccess, setIsSuccess] = useState(false);
+  // A payment already recorded (e.g. the user refreshed on this screen) counts as success.
+  const [isSuccess, setIsSuccess] = useState(() => payload.payment?.paymentStatus === 'SUCCESS');
 
   // Extract the computed tax due from the previous phase
   const taxDue = payload.taxComputation?.due || 0;
+
+  // Reached with nothing to pay (a refund/nil return, or landed here via Back).
+  // Don't show a payment form for a non-positive amount — offer to continue.
+  if (taxDue <= 0 && !isSuccess) {
+    return (
+      <div className="min-h-dvh bg-gray-100 flex flex-col items-center justify-start">
+        <div className="w-full max-w-[360px] bg-gray-50 shadow-xl h-dvh relative flex flex-col overflow-hidden sm:border-x sm:border-gray-200">
+          <div className="flex-1 flex flex-col items-center justify-center text-center p-6">
+            <div className="w-16 h-16 bg-green-100 text-green-600 rounded-full flex items-center justify-center mb-4">
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+              </svg>
+            </div>
+            <h2 className="text-xl font-black text-gray-900 mb-2">Nothing to Pay</h2>
+            <p className="text-gray-600 text-sm mb-8">
+              Based on your computation there is no self-assessment tax due. You can go straight to e-verification.
+            </p>
+            <button
+              onClick={onNext}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3.5 px-6 rounded-xl shadow-md transition-all active:scale-95"
+            >
+              Proceed to e-Verification &rarr;
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
   
   const paymentMethods = [
     { id: 'upi', label: 'UPI (GPay/PhonePe)' },

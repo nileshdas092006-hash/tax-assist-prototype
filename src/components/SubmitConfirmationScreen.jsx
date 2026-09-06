@@ -1,13 +1,16 @@
 import React, { useState } from 'react';
 
-const SubmitConfirmationScreen = ({ flowType = 'correction', formType = 'ITR-1', onBack, handleReturnToDashboard }) => {
+const SubmitConfirmationScreen = ({ flowType = 'correction', formType = 'ITR-1', payload, setPayload, onBack, handleReturnToDashboard }) => {
   const [otp, setOtp] = useState('');
-  const [isSubmitted, setIsSubmitted] = useState(false);
+  // If a submission was already recorded (the user refreshed on the receipt),
+  // stay on the receipt instead of showing the OTP form again.
+  const [isSubmitted, setIsSubmitted] = useState(() => payload?.filed === true);
 
   const handleSubmit = (e) => {
     if (e) e.preventDefault();
     if (otp.length >= 4) { // Allow easy demoing
       setIsSubmitted(true);
+      if (setPayload) setPayload((prev) => ({ ...prev, filed: true }));
     }
   };
 

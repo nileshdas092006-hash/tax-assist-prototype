@@ -15,3 +15,12 @@ html, body {
 .app-devmode { padding-top: 2rem; }
 .app-devmode .min-h-dvh { min-height: calc(100dvh - 2rem); }
 .app-devmode .h-dvh { height: calc(100dvh - 2rem); }
+
+/* Used by success cards (e.g. PaymentScreen) via Tailwind's animate-[fadeIn_...] */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}

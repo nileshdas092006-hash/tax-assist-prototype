@@ -72,7 +72,8 @@ export default async function handler(req, res) {
         const content = fallbackResponse.choices[0].message.content;
         return res.status(200).json(JSON.parse(content));
       } catch (fallbackError) {
-        console.error('OpenRouter fallback failed:', fallbackError);
+        // Log full detail server-side only; the client just needs a non-2xx.
+        console.error('translate-notice: OpenRouter fallback failed:', fallbackError);
         return res.status(502).json({ error: 'Translation service unavailable.' });
       }
     }

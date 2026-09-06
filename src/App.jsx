@@ -3,9 +3,8 @@ import NoticeIntakeScreen from './components/NoticeIntakeScreen'
 import GuidedCorrectionScreen from './components/GuidedCorrectionScreen'
 import SubmitConfirmationScreen from './components/SubmitConfirmationScreen'
 import DashboardScreen from './components/DashboardScreen'
-import AIIntakeScreen from './components/AIIntakeScreen'
-import PreFillScreen from './components/PreFillScreen'
-import DeductionsScreen from './components/DeductionsScreen'
+import FormDetectionScreen from './components/FormDetectionScreen'
+import DynamicFormFillerScreen from './components/DynamicFormFillerScreen'
 import TaxSummaryScreen from './components/TaxSummaryScreen'
 import PaymentScreen from './components/PaymentScreen'
 
@@ -15,7 +14,23 @@ const SESSION_KEY = 'tax-assist:flow'
 // sessionStorage written by an older build, or a half-built flow — must fall back
 // to the Dashboard rather than render a blank page (the failure class that took
 // the site down once already).
-const KNOWN_STEPS = [0, 1, 2, 3, 10, 11, 12, 13, 14, 15]
+const KNOWN_STEPS = [0, 1, 2, 3, 10, 11, 12, 13, 14]
+
+// The ordered steps of each flow, used to seed the history stack on load so the
+// browser Back button walks the flow instead of leaving the app or landing on
+// steps the user never visited.
+const DEFECTIVE_FLOW = [1, 2, 3]
+const FILING_FLOW = [0, 10, 11, 12, 13, 14]
+
+function historyPathTo(target, payload) {
+  if (target >= 10) {
+    let seq = FILING_FLOW.filter((s) => s <= target)
+    // A refund / nil return skips the payment screen (12 -> 14).
+    if (target === 14 && !(payload && payload.payment)) seq = seq.filter((s) => s !== 13)
+    return seq
+  }
+  return DEFECTIVE_FLOW.filter((s) => s <= target)
+}
 
 // Read the persisted flow state from sessionStorage. Returns null when nothing
 // is stored or storage is unavailable (private mode, storage disabled, quota).
@@ -63,14 +78,15 @@ function App() {
 
   // Rebuild a history back-stack for the current step on mount. A page load
   // (including a refresh mid-flow) starts with a single history entry, so without
-  // this the native Back arrow would leave the app. After this runs the stack is
-  // [step 1, step 2, ... current step] and Back walks 3 -> 2 -> 1.
+  // this the native Back arrow would leave the app. We seed one entry per step
+  // the user actually passed through, so Back walks e.g. 12 -> 11 -> 10 -> 0.
   useEffect(() => {
-    window.history.replaceState({ step: 1 }, '')
-    for (let s = 2; s <= initialStep; s += 1) {
-      window.history.pushState({ step: s }, '')
+    const path = historyPathTo(initialStep, restored?.backgroundITRPayload)
+    window.history.replaceState({ step: path[0] ?? 0 }, '')
+    for (let i = 1; i < path.length; i += 1) {
+      window.history.pushState({ step: path[i] }, '')
     }
-  }, [initialStep])
+  }, [initialStep, restored])
 
   // Native Back / Forward: mirror whatever history entry we land on into React
   // state instead of unloading the page.
@@ -130,9 +146,16 @@ function App() {
       )}
       {activeStep === 1 && <NoticeIntakeScreen onNext={() => goToStep(2)} aiAnalysis={aiAnalysis} setAiAnalysis={setAiAnalysis} />}
       {activeStep === 2 && <GuidedCorrectionScreen answers={correctionAnswers} setAnswers={setCorrectionAnswers} onNext={() => goToStep(3)} onBack={goBack} aiAnalysis={aiAnalysis} />}
-      {activeStep === 3 && <SubmitConfirmationScreen handleReturnToDashboard={handleReturnToDashboard} onBack={goBack} />}
+      {activeStep === 3 && (
+        <SubmitConfirmationScreen
+          payload={backgroundITRPayload}
+          setPayload={setBackgroundITRPayload}
+          handleReturnToDashboard={handleReturnToDashboard}
+          onBack={goBack}
+        />
+      )}
       {activeStep === 10 && (
-        <AIIntakeScreen
+        <FormDetectionScreen
           payload={backgroundITRPayload}
           setPayload={setBackgroundITRPayload}
           onNext={() => goToStep(11)}
@@ -140,7 +163,7 @@ function App() {
         />
       )}
       {activeStep === 11 && (
-        <PreFillScreen
+        <DynamicFormFillerScreen
           payload={backgroundITRPayload}
           setPayload={setBackgroundITRPayload}
           onNext={() => goToStep(12)}
@@ -148,34 +171,28 @@ function App() {
         />
       )}
       {activeStep === 12 && (
-        <DeductionsScreen
+        <TaxSummaryScreen
           payload={backgroundITRPayload}
           setPayload={setBackgroundITRPayload}
-          onNext={() => goToStep(13)}
+          onPayment={() => goToStep(13)}
+          onVerification={() => goToStep(14)}
           onBack={() => goToStep(11)}
         />
       )}
       {activeStep === 13 && (
-        <TaxSummaryScreen
+        <PaymentScreen
           payload={backgroundITRPayload}
           setPayload={setBackgroundITRPayload}
-          onPayment={() => goToStep(14)}
-          onVerification={() => goToStep(15)}
+          onNext={() => goToStep(14)}
           onBack={() => goToStep(12)}
         />
       )}
       {activeStep === 14 && (
-        <PaymentScreen
-          payload={backgroundITRPayload}
-          setPayload={setBackgroundITRPayload}
-          onNext={() => goToStep(15)}
-          onBack={() => goToStep(13)}
-        />
-      )}
-      {activeStep === 15 && (
         <SubmitConfirmationScreen
           flowType="filing"
           formType={backgroundITRPayload.recommended_form || 'ITR-1'}
+          payload={backgroundITRPayload}
+          setPayload={setBackgroundITRPayload}
           handleReturnToDashboard={handleReturnToDashboard}
           onBack={goBack}
         />

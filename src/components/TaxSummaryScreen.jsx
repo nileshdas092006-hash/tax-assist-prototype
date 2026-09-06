@@ -9,11 +9,12 @@ export default function TaxSummaryScreen({ payload, setPayload, onPayment, onVer
     const income = payload.income || {};
     const deductions = payload.deductions || {};
 
-    const gross = 
-      (Number(income.gross_salary) || 0) + 
-      (Number(income.gross_receipts) || 0) + 
-      (Number(income.short_term_gains) || 0) + 
-      (Number(income.savings_and_fd_interest) || 0) + 
+    const gross =
+      (Number(income.gross_salary) || 0) +
+      (Number(income.house_property_income) || 0) +
+      (Number(income.gross_receipts) || 0) +
+      (Number(income.short_term_gains) || 0) +
+      (Number(income.savings_and_fd_interest) || 0) +
       (Number(income.dividend_income) || 0);
     
     const totalDeductions = Number(deductions.total) || 0;
@@ -155,7 +156,13 @@ export default function TaxSummaryScreen({ payload, setPayload, onPayment, onVer
           
           <div className={`p-4 border-t ${computation.due > 0 ? 'bg-orange-50 border-orange-100 text-orange-900' : 'bg-green-50 border-green-100 text-green-900'}`}>
             <div className="flex justify-between items-center font-bold text-lg">
-              <span>{computation.due > 0 ? 'Total Tax Due' : 'Tax Refund'}</span>
+              <span>
+                {computation.due > 0
+                  ? 'Total Tax Due'
+                  : computation.due < 0
+                    ? 'Tax Refund'
+                    : 'Nothing to Pay'}
+              </span>
               <span>{formatCurrency(Math.abs(computation.due))}</span>
             </div>
           </div>
